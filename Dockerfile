@@ -1,4 +1,4 @@
-ARG MONGODB_TOOLS_VERSION=100.8.0
+ARG MONGODB_TOOLS_VERSION=100.7.0
 ARG EN_AWS_CLI=false
 ARG AWS_CLI_VERSION=1.29.44
 ARG EN_AZURE=false
@@ -11,7 +11,7 @@ ARG EN_MINIO=false
 ARG EN_RCLONE=false
 ARG VERSION
 
-FROM maxisam/mongo-tool:${MONGODB_TOOLS_VERSION} as tools-builder
+FROM aritrosaha/mongo-tool:${MONGODB_TOOLS_VERSION} as tools-builder
 
 FROM golang:1.21 as mgob-builder
 ARG VERSION
