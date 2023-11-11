@@ -11,7 +11,7 @@ on:
 
 jobs:
   set-build-env:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       buildId: ${{ env.BUILD_NUMBER }}
       now: ${{ env.NOW }}
@@ -25,7 +25,7 @@ jobs:
         run: echo "NOW=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
   build-per-tool:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: set-build-env
     strategy:
       matrix:
@@ -59,7 +59,7 @@ jobs:
           labels: ${{ needs.set-build-env.outputs.buildId }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ github.repository }}:${{ needs.set-build-env.outputs.buildId }}-${{ matrix.feature }}
+            aritrosaha:${{ needs.set-build-env.outputs.buildId }}-${{ matrix.feature }}
           build-args: |
             BUILD_DATE=${{ needs.set-build-env.outputs.now }}
             VCS_REF=${{ github.sha }}
@@ -70,7 +70,7 @@ jobs:
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/mgob:buildcache,mode=max
 
   build-all:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [set-build-env, build-per-tool]
     permissions:
       contents: write
@@ -92,8 +92,8 @@ jobs:
           labels: ${{ needs.set-build-env.outputs.buildId }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ github.repository }}:${{ needs.set-build-env.outputs.buildId }}-all
-            ${{ github.repository }}:latest
+            aritrosaha:${{ needs.set-build-env.outputs.buildId }}-all
+            aritrosaha:latest
           build-args: |
             BUILD_DATE=${{ env.NOW }}
             VCS_REF=${{ github.sha }}
