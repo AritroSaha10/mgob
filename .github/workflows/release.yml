@@ -32,15 +32,15 @@ jobs:
         feature: [aws, azure, gcloud, minio, rclone]
         include:
           - feature: aws
-            arg: EN_AWS_CLI=true
+            arg: EN_AWS_CLI=false
           - feature: azure
-            arg: EN_AZURE=true
+            arg: EN_AZURE=false
           - feature: gcloud
             arg: EN_GCLOUD=true
           - feature: minio
-            arg: EN_MINIO=true
+            arg: EN_MINIO=false
           - feature: rclone
-            arg: EN_RCLONE=true
+            arg: EN_RCLONE=false
     steps:
       - uses: actions/checkout@v3
 
@@ -59,7 +59,7 @@ jobs:
           labels: ${{ needs.set-build-env.outputs.buildId }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            aritrosaha:${{ needs.set-build-env.outputs.buildId }}-${{ matrix.feature }}
+            ${{ secrets.DOCKER_USERNAME }}/mgob:${{ needs.set-build-env.outputs.buildId }}-${{ matrix.feature }}
           build-args: |
             BUILD_DATE=${{ needs.set-build-env.outputs.now }}
             VCS_REF=${{ github.sha }}
@@ -92,8 +92,8 @@ jobs:
           labels: ${{ needs.set-build-env.outputs.buildId }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            aritrosaha:${{ needs.set-build-env.outputs.buildId }}-all
-            aritrosaha:latest
+            ${{ secrets.DOCKER_USERNAME }}/mgob:${{ needs.set-build-env.outputs.buildId }}-all
+            ${{ secrets.DOCKER_USERNAME }}/mgob:latest
           build-args: |
             BUILD_DATE=${{ env.NOW }}
             VCS_REF=${{ github.sha }}
