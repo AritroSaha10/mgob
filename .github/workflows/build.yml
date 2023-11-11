@@ -7,7 +7,7 @@ on:
 
 jobs:
   dev-build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       APP_VERSION: dev
       MINIO_ROOT_USER: AKIAIOSFODNN7EXAMPLE
@@ -216,7 +216,7 @@ jobs:
             EN_MINIO=true
             EN_RCLONE=true
             EN_GPG=true
-          tags: ${{ github.repository }}:${{ env.APP_VERSION }}.${{ github.run_number }}
+          tags: aritrosaha:${{ env.APP_VERSION }}.${{ github.run_number }}
           push: true
           cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/mgob:buildcache-dev
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/mgob:buildcache-dev,mode=max
